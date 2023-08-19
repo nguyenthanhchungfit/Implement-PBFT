@@ -7,3 +7,6 @@ build
 # IDE
 .idea
 .vscode
+
+# log
+logs

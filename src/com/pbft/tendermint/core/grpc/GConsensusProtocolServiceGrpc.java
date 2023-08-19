@@ -15,6 +15,37 @@ public final class GConsensusProtocolServiceGrpc {
   public static final String SERVICE_NAME = "tendermint.GConsensusProtocolService";
 
   // Static method descriptors that strictly reflect the proto.
+  private static volatile io.grpc.MethodDescriptor<com.pbft.tendermint.core.grpc.GPingMessage,
+      com.pbft.tendermint.core.grpc.GPongMessage> getPingMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "Ping",
+      requestType = com.pbft.tendermint.core.grpc.GPingMessage.class,
+      responseType = com.pbft.tendermint.core.grpc.GPongMessage.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<com.pbft.tendermint.core.grpc.GPingMessage,
+      com.pbft.tendermint.core.grpc.GPongMessage> getPingMethod() {
+    io.grpc.MethodDescriptor<com.pbft.tendermint.core.grpc.GPingMessage, com.pbft.tendermint.core.grpc.GPongMessage> getPingMethod;
+    if ((getPingMethod = GConsensusProtocolServiceGrpc.getPingMethod) == null) {
+      synchronized (GConsensusProtocolServiceGrpc.class) {
+        if ((getPingMethod = GConsensusProtocolServiceGrpc.getPingMethod) == null) {
+          GConsensusProtocolServiceGrpc.getPingMethod = getPingMethod =
+              io.grpc.MethodDescriptor.<com.pbft.tendermint.core.grpc.GPingMessage, com.pbft.tendermint.core.grpc.GPongMessage>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "Ping"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.pbft.tendermint.core.grpc.GPingMessage.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.pbft.tendermint.core.grpc.GPongMessage.getDefaultInstance()))
+              .setSchemaDescriptor(new GConsensusProtocolServiceMethodDescriptorSupplier("Ping"))
+              .build();
+        }
+      }
+    }
+    return getPingMethod;
+  }
+
   private static volatile io.grpc.MethodDescriptor<com.pbft.tendermint.core.grpc.GProposeMessage,
       com.pbft.tendermint.core.grpc.GResult> getOnProposeMessageMethod;
 
@@ -189,6 +220,13 @@ public final class GConsensusProtocolServiceGrpc {
 
     /**
      */
+    default void ping(com.pbft.tendermint.core.grpc.GPingMessage request,
+        io.grpc.stub.StreamObserver<com.pbft.tendermint.core.grpc.GPongMessage> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getPingMethod(), responseObserver);
+    }
+
+    /**
+     */
     default void onProposeMessage(com.pbft.tendermint.core.grpc.GProposeMessage request,
         io.grpc.stub.StreamObserver<com.pbft.tendermint.core.grpc.GResult> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getOnProposeMessageMethod(), responseObserver);
@@ -245,6 +283,14 @@ public final class GConsensusProtocolServiceGrpc {
 
     /**
      */
+    public void ping(com.pbft.tendermint.core.grpc.GPingMessage request,
+        io.grpc.stub.StreamObserver<com.pbft.tendermint.core.grpc.GPongMessage> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncUnaryCall(
+          getChannel().newCall(getPingMethod(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     */
     public void onProposeMessage(com.pbft.tendermint.core.grpc.GProposeMessage request,
         io.grpc.stub.StreamObserver<com.pbft.tendermint.core.grpc.GResult> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
@@ -294,6 +340,13 @@ public final class GConsensusProtocolServiceGrpc {
 
     /**
      */
+    public com.pbft.tendermint.core.grpc.GPongMessage ping(com.pbft.tendermint.core.grpc.GPingMessage request) {
+      return io.grpc.stub.ClientCalls.blockingUnaryCall(
+          getChannel(), getPingMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
     public com.pbft.tendermint.core.grpc.GResult onProposeMessage(com.pbft.tendermint.core.grpc.GProposeMessage request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getOnProposeMessageMethod(), getCallOptions(), request);
@@ -339,6 +392,14 @@ public final class GConsensusProtocolServiceGrpc {
 
     /**
      */
+    public com.google.common.util.concurrent.ListenableFuture<com.pbft.tendermint.core.grpc.GPongMessage> ping(
+        com.pbft.tendermint.core.grpc.GPingMessage request) {
+      return io.grpc.stub.ClientCalls.futureUnaryCall(
+          getChannel().newCall(getPingMethod(), getCallOptions()), request);
+    }
+
+    /**
+     */
     public com.google.common.util.concurrent.ListenableFuture<com.pbft.tendermint.core.grpc.GResult> onProposeMessage(
         com.pbft.tendermint.core.grpc.GProposeMessage request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
@@ -370,10 +431,11 @@ public final class GConsensusProtocolServiceGrpc {
     }
   }
 
-  private static final int METHODID_ON_PROPOSE_MESSAGE = 0;
-  private static final int METHODID_ON_PRE_VOTE_MESSAGE = 1;
-  private static final int METHODID_ON_PRE_COMMIT_MESSAGE = 2;
-  private static final int METHODID_START_CONSENSUS = 3;
+  private static final int METHODID_PING = 0;
+  private static final int METHODID_ON_PROPOSE_MESSAGE = 1;
+  private static final int METHODID_ON_PRE_VOTE_MESSAGE = 2;
+  private static final int METHODID_ON_PRE_COMMIT_MESSAGE = 3;
+  private static final int METHODID_START_CONSENSUS = 4;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -392,6 +454,10 @@ public final class GConsensusProtocolServiceGrpc {
     @java.lang.SuppressWarnings("unchecked")
     public void invoke(Req request, io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
+        case METHODID_PING:
+          serviceImpl.ping((com.pbft.tendermint.core.grpc.GPingMessage) request,
+              (io.grpc.stub.StreamObserver<com.pbft.tendermint.core.grpc.GPongMessage>) responseObserver);
+          break;
         case METHODID_ON_PROPOSE_MESSAGE:
           serviceImpl.onProposeMessage((com.pbft.tendermint.core.grpc.GProposeMessage) request,
               (io.grpc.stub.StreamObserver<com.pbft.tendermint.core.grpc.GResult>) responseObserver);
@@ -426,6 +492,13 @@ public final class GConsensusProtocolServiceGrpc {
 
   public static final io.grpc.ServerServiceDefinition bindService(AsyncService service) {
     return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
+        .addMethod(
+          getPingMethod(),
+          io.grpc.stub.ServerCalls.asyncUnaryCall(
+            new MethodHandlers<
+              com.pbft.tendermint.core.grpc.GPingMessage,
+              com.pbft.tendermint.core.grpc.GPongMessage>(
+                service, METHODID_PING)))
         .addMethod(
           getOnProposeMessageMethod(),
           io.grpc.stub.ServerCalls.asyncUnaryCall(
@@ -502,6 +575,7 @@ public final class GConsensusProtocolServiceGrpc {
         if (result == null) {
           serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
               .setSchemaDescriptor(new GConsensusProtocolServiceFileDescriptorSupplier())
+              .addMethod(getPingMethod())
               .addMethod(getOnProposeMessageMethod())
               .addMethod(getOnPreVoteMessageMethod())
               .addMethod(getOnPreCommitMessageMethod())

@@ -6,10 +6,20 @@ option java_package = "com.pbft.tendermint.core.grpc";
 option java_outer_classname = "TendermintConsensusProto";
 
 service GConsensusProtocolService {
+  rpc Ping(GPingMessage) returns (GPongMessage) {}
   rpc OnProposeMessage(GProposeMessage) returns (GResult) {}
   rpc OnPreVoteMessage(GPreVoteMessage) returns (GResult) {}
   rpc OnPreCommitMessage(GPreCommitMessage) returns (GResult) {}
   rpc StartConsensus(GRequest) returns (GResult){}
+}
+
+message GPingMessage {
+  int32 nodeId = 1;
+}
+
+message GPongMessage {
+  int32 error = 1;
+  int32 nodeId = 2;
 }
 
 message GData {
@@ -18,15 +28,16 @@ message GData {
 }
 
 message GProposeMessage {
-  int32 height = 1;
-  int32 round = 2;
-  GData data = 3;
+  int32 nodeId = 1;
+  int32 height = 2;
+  int32 round = 3;
   int32 validRound = 4;
-  int32 nodeId = 5;
-  bytes signature = 6;
+  GData data = 5;
+  bytes hashValue = 6;
+  bytes signature = 7;
 }
 
-message GPreCommitMessage {
+message GPreVoteMessage {
   int32 height = 1;
   int32 round = 2;
   bytes hashValue = 3;
@@ -34,7 +45,7 @@ message GPreCommitMessage {
   int32 nodeId = 5;
 }
 
-message GPreVoteMessage {
+message GPreCommitMessage {
   int32 height = 1;
   int32 round = 2;
   bytes hashValue = 3;

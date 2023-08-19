@@ -18,6 +18,7 @@ ext {
             '-Dzappprof=development',
             '-Dzconfdir=conf',
             '-Dzconffiles=config.ini,profile_config.ini,zfriend_config.ini',
+            '-Dlog4j.configurationFile=conf/log4j2.xml'
     ]
 }
 

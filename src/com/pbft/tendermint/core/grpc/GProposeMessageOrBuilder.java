@@ -8,31 +8,22 @@ public interface GProposeMessageOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>int32 height = 1;</code>
+   * <code>int32 nodeId = 1;</code>
+   * @return The nodeId.
+   */
+  int getNodeId();
+
+  /**
+   * <code>int32 height = 2;</code>
    * @return The height.
    */
   int getHeight();
 
   /**
-   * <code>int32 round = 2;</code>
+   * <code>int32 round = 3;</code>
    * @return The round.
    */
   int getRound();
-
-  /**
-   * <code>.tendermint.GData data = 3;</code>
-   * @return Whether the data field is set.
-   */
-  boolean hasData();
-  /**
-   * <code>.tendermint.GData data = 3;</code>
-   * @return The data.
-   */
-  com.pbft.tendermint.core.grpc.GData getData();
-  /**
-   * <code>.tendermint.GData data = 3;</code>
-   */
-  com.pbft.tendermint.core.grpc.GDataOrBuilder getDataOrBuilder();
 
   /**
    * <code>int32 validRound = 4;</code>
@@ -41,13 +32,28 @@ public interface GProposeMessageOrBuilder extends
   int getValidRound();
 
   /**
-   * <code>int32 nodeId = 5;</code>
-   * @return The nodeId.
+   * <code>.tendermint.GData data = 5;</code>
+   * @return Whether the data field is set.
    */
-  int getNodeId();
+  boolean hasData();
+  /**
+   * <code>.tendermint.GData data = 5;</code>
+   * @return The data.
+   */
+  com.pbft.tendermint.core.grpc.GData getData();
+  /**
+   * <code>.tendermint.GData data = 5;</code>
+   */
+  com.pbft.tendermint.core.grpc.GDataOrBuilder getDataOrBuilder();
 
   /**
-   * <code>bytes signature = 6;</code>
+   * <code>bytes hashValue = 6;</code>
+   * @return The hashValue.
+   */
+  com.google.protobuf.ByteString getHashValue();
+
+  /**
+   * <code>bytes signature = 7;</code>
    * @return The signature.
    */
   com.google.protobuf.ByteString getSignature();

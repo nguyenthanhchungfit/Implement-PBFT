@@ -1,18 +1,24 @@
 package com.pbft.tendermint.node;
 
-import com.pbft.tendermint.core.grpc.GPreCommitMessage;
-import com.pbft.tendermint.core.grpc.GPreVoteMessage;
-import com.pbft.tendermint.core.grpc.GProposeMessage;
-import com.pbft.tendermint.core.grpc.GResult;
+import com.google.protobuf.ByteString;
+import com.pbft.tendermint.common.MessageUtils;
+import com.pbft.tendermint.core.grpc.*;
+import com.pbft.tendermint.grpc.GTendermintConsensusClient;
 import com.pbft.tendermint.grpc.GTendermintConsensusServer;
+import com.pbft.utils.CryptoUtils;
+import io.grpc.Grpc;
+import io.grpc.InsecureChannelCredentials;
+import io.grpc.ManagedChannel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyPair;
 import java.util.Collections;
-import java.util.List;
 
 /**
  * @author chungnt
@@ -26,14 +32,87 @@ import java.util.List;
 public class CompliantNode extends ConsensusNode {
 	private IProcessor processor;
 
-	public CompliantNode(String address, int port, int nodeId, KeyPair keyPair, IProcessor processor) {
-		super(nodeId, keyPair, Collections.EMPTY_LIST, address, port, null);
+	public CompliantNode(String address, int port, int nodeId, KeyPair keyPair, IProcessor processor, Logger logger) {
+		super(nodeId, keyPair, Collections.EMPTY_LIST, address, port, null, null);
 		this.processor = processor;
+		this.logger = logger;
 		this.server = new GTendermintConsensusServer(port, processor);
 	}
 
 	@Override
-	public void start() {
+	public void startServer() {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					logger.info("Start listening at port: " + server.getPort());
+					server.start();
+				} catch (IOException ex) {
+					logger.error(ex.getMessage(), ex);
+				}
+			}
+		}).start();
+		checkServerIsStarted();
+	}
 
+	private void checkServerIsStarted() {
+		String host = address + ":" + port;
+		ManagedChannel channel = Grpc.newChannelBuilder(host, InsecureChannelCredentials.create())
+				.build();
+		GTendermintConsensusClient client = new GTendermintConsensusClient(channel);
+		GPingMessage msg = GPingMessage.newBuilder()
+				.setNodeId(nodeId).build();
+		for (int i = 0; i < 10; i++) {
+			GPongMessage pongMsg = client.sendPingMessage(msg);
+			if (pongMsg.getError() == 0) {
+				logger.info("Ping Server success at: " + i);
+				break;
+			} else {
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException ex) {
+					logger.error(ex.getMessage());
+				}
+			}
+		}
+	}
+
+	public void broadcastProposeMessage(GProposeMessage msg) {
+		String dataToHash = MessageUtils.getDataToHash(msg);
+		byte[] hashData = CryptoUtils.hash(dataToHash).getBytes(StandardCharsets.UTF_8);
+		byte[] encryptData = CryptoUtils.encrypt(hashData, keyPair.getPrivate());
+		if (encryptData == null) {
+			this.logger.error("Encrypt data error");
+			return;
+		}
+		GProposeMessage proposeMsg = msg.toBuilder().setHashValue(ByteString.copyFrom(hashData))
+				.setSignature(ByteString.copyFrom(encryptData))
+				.build();
+		for (NeighborNode node : this.getNeighborNodes()) {
+			node.sendProposeMessage(proposeMsg);
+		}
+	}
+
+	public void broadcastPreVoteMessage(GPreVoteMessage msg) {
+		for (NeighborNode node : this.getNeighborNodes()) {
+			node.sendPreVoteMessage(msg);
+		}
+	}
+
+	public void broadcastPreCommitMessage(GPreCommitMessage msg) {
+		for (NeighborNode node : this.getNeighborNodes()) {
+			node.sendPreCommitMessage(msg);
+		}
+	}
+
+	@Override
+	public String toString() {
+		return "CompliantNode{" +
+				"nodeId=" + nodeId +
+				", address='" + address + '\'' +
+				", port=" + port +
+				", server=" + server +
+				", neighborNodes=" + neighborNodes +
+				'}';
 	}
 }

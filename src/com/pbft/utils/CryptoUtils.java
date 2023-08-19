@@ -46,10 +46,10 @@ public class CryptoUtils {
 		return pair;
 	}
 
-	public static byte[] encrypt(byte[] rawData, PublicKey publicKey) {
+	public static byte[] encrypt(byte[] rawData, PrivateKey privateKey) {
 		try {
 			Cipher encryptCipher = Cipher.getInstance(ENCRYPTED_ALGORITHM);
-			encryptCipher.init(Cipher.ENCRYPT_MODE, publicKey);
+			encryptCipher.init(Cipher.ENCRYPT_MODE, privateKey);
 			return encryptCipher.doFinal(rawData);
 		} catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException |
 				 BadPaddingException ex) {
@@ -58,10 +58,10 @@ public class CryptoUtils {
 		return null;
 	}
 
-	public static byte[] decrypt(byte[] encryptedData, PrivateKey privateKey) {
+	public static byte[] decrypt(byte[] encryptedData, PublicKey pubKey) {
 		try {
 			Cipher decryptCipher = Cipher.getInstance("RSA");
-			decryptCipher.init(Cipher.DECRYPT_MODE, privateKey);
+			decryptCipher.init(Cipher.DECRYPT_MODE, pubKey);
 			return decryptCipher.doFinal(encryptedData);
 		} catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException |
 				 BadPaddingException ex) {

@@ -16,6 +16,7 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private GProposeMessage() {
+    hashValue_ = com.google.protobuf.ByteString.EMPTY;
     signature_ = com.google.protobuf.ByteString.EMPTY;
   }
 
@@ -51,15 +52,25 @@ private static final long serialVersionUID = 0L;
             break;
           case 8: {
 
-            height_ = input.readInt32();
+            nodeId_ = input.readInt32();
             break;
           }
           case 16: {
 
+            height_ = input.readInt32();
+            break;
+          }
+          case 24: {
+
             round_ = input.readInt32();
             break;
           }
-          case 26: {
+          case 32: {
+
+            validRound_ = input.readInt32();
+            break;
+          }
+          case 42: {
             com.pbft.tendermint.core.grpc.GData.Builder subBuilder = null;
             if (data_ != null) {
               subBuilder = data_.toBuilder();
@@ -72,17 +83,12 @@ private static final long serialVersionUID = 0L;
 
             break;
           }
-          case 32: {
-
-            validRound_ = input.readInt32();
-            break;
-          }
-          case 40: {
-
-            nodeId_ = input.readInt32();
-            break;
-          }
           case 50: {
+
+            hashValue_ = input.readBytes();
+            break;
+          }
+          case 58: {
 
             signature_ = input.readBytes();
             break;
@@ -119,10 +125,21 @@ private static final long serialVersionUID = 0L;
             com.pbft.tendermint.core.grpc.GProposeMessage.class, com.pbft.tendermint.core.grpc.GProposeMessage.Builder.class);
   }
 
-  public static final int HEIGHT_FIELD_NUMBER = 1;
+  public static final int NODEID_FIELD_NUMBER = 1;
+  private int nodeId_;
+  /**
+   * <code>int32 nodeId = 1;</code>
+   * @return The nodeId.
+   */
+  @java.lang.Override
+  public int getNodeId() {
+    return nodeId_;
+  }
+
+  public static final int HEIGHT_FIELD_NUMBER = 2;
   private int height_;
   /**
-   * <code>int32 height = 1;</code>
+   * <code>int32 height = 2;</code>
    * @return The height.
    */
   @java.lang.Override
@@ -130,41 +147,15 @@ private static final long serialVersionUID = 0L;
     return height_;
   }
 
-  public static final int ROUND_FIELD_NUMBER = 2;
+  public static final int ROUND_FIELD_NUMBER = 3;
   private int round_;
   /**
-   * <code>int32 round = 2;</code>
+   * <code>int32 round = 3;</code>
    * @return The round.
    */
   @java.lang.Override
   public int getRound() {
     return round_;
-  }
-
-  public static final int DATA_FIELD_NUMBER = 3;
-  private com.pbft.tendermint.core.grpc.GData data_;
-  /**
-   * <code>.tendermint.GData data = 3;</code>
-   * @return Whether the data field is set.
-   */
-  @java.lang.Override
-  public boolean hasData() {
-    return data_ != null;
-  }
-  /**
-   * <code>.tendermint.GData data = 3;</code>
-   * @return The data.
-   */
-  @java.lang.Override
-  public com.pbft.tendermint.core.grpc.GData getData() {
-    return data_ == null ? com.pbft.tendermint.core.grpc.GData.getDefaultInstance() : data_;
-  }
-  /**
-   * <code>.tendermint.GData data = 3;</code>
-   */
-  @java.lang.Override
-  public com.pbft.tendermint.core.grpc.GDataOrBuilder getDataOrBuilder() {
-    return getData();
   }
 
   public static final int VALIDROUND_FIELD_NUMBER = 4;
@@ -178,21 +169,47 @@ private static final long serialVersionUID = 0L;
     return validRound_;
   }
 
-  public static final int NODEID_FIELD_NUMBER = 5;
-  private int nodeId_;
+  public static final int DATA_FIELD_NUMBER = 5;
+  private com.pbft.tendermint.core.grpc.GData data_;
   /**
-   * <code>int32 nodeId = 5;</code>
-   * @return The nodeId.
+   * <code>.tendermint.GData data = 5;</code>
+   * @return Whether the data field is set.
    */
   @java.lang.Override
-  public int getNodeId() {
-    return nodeId_;
+  public boolean hasData() {
+    return data_ != null;
+  }
+  /**
+   * <code>.tendermint.GData data = 5;</code>
+   * @return The data.
+   */
+  @java.lang.Override
+  public com.pbft.tendermint.core.grpc.GData getData() {
+    return data_ == null ? com.pbft.tendermint.core.grpc.GData.getDefaultInstance() : data_;
+  }
+  /**
+   * <code>.tendermint.GData data = 5;</code>
+   */
+  @java.lang.Override
+  public com.pbft.tendermint.core.grpc.GDataOrBuilder getDataOrBuilder() {
+    return getData();
   }
 
-  public static final int SIGNATURE_FIELD_NUMBER = 6;
+  public static final int HASHVALUE_FIELD_NUMBER = 6;
+  private com.google.protobuf.ByteString hashValue_;
+  /**
+   * <code>bytes hashValue = 6;</code>
+   * @return The hashValue.
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString getHashValue() {
+    return hashValue_;
+  }
+
+  public static final int SIGNATURE_FIELD_NUMBER = 7;
   private com.google.protobuf.ByteString signature_;
   /**
-   * <code>bytes signature = 6;</code>
+   * <code>bytes signature = 7;</code>
    * @return The signature.
    */
   @java.lang.Override
@@ -214,23 +231,26 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
+    if (nodeId_ != 0) {
+      output.writeInt32(1, nodeId_);
+    }
     if (height_ != 0) {
-      output.writeInt32(1, height_);
+      output.writeInt32(2, height_);
     }
     if (round_ != 0) {
-      output.writeInt32(2, round_);
-    }
-    if (data_ != null) {
-      output.writeMessage(3, getData());
+      output.writeInt32(3, round_);
     }
     if (validRound_ != 0) {
       output.writeInt32(4, validRound_);
     }
-    if (nodeId_ != 0) {
-      output.writeInt32(5, nodeId_);
+    if (data_ != null) {
+      output.writeMessage(5, getData());
+    }
+    if (!hashValue_.isEmpty()) {
+      output.writeBytes(6, hashValue_);
     }
     if (!signature_.isEmpty()) {
-      output.writeBytes(6, signature_);
+      output.writeBytes(7, signature_);
     }
     unknownFields.writeTo(output);
   }
@@ -241,29 +261,33 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
+    if (nodeId_ != 0) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt32Size(1, nodeId_);
+    }
     if (height_ != 0) {
       size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(1, height_);
+        .computeInt32Size(2, height_);
     }
     if (round_ != 0) {
       size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(2, round_);
-    }
-    if (data_ != null) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(3, getData());
+        .computeInt32Size(3, round_);
     }
     if (validRound_ != 0) {
       size += com.google.protobuf.CodedOutputStream
         .computeInt32Size(4, validRound_);
     }
-    if (nodeId_ != 0) {
+    if (data_ != null) {
       size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(5, nodeId_);
+        .computeMessageSize(5, getData());
+    }
+    if (!hashValue_.isEmpty()) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeBytesSize(6, hashValue_);
     }
     if (!signature_.isEmpty()) {
       size += com.google.protobuf.CodedOutputStream
-        .computeBytesSize(6, signature_);
+        .computeBytesSize(7, signature_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -280,19 +304,21 @@ private static final long serialVersionUID = 0L;
     }
     com.pbft.tendermint.core.grpc.GProposeMessage other = (com.pbft.tendermint.core.grpc.GProposeMessage) obj;
 
+    if (getNodeId()
+        != other.getNodeId()) return false;
     if (getHeight()
         != other.getHeight()) return false;
     if (getRound()
         != other.getRound()) return false;
+    if (getValidRound()
+        != other.getValidRound()) return false;
     if (hasData() != other.hasData()) return false;
     if (hasData()) {
       if (!getData()
           .equals(other.getData())) return false;
     }
-    if (getValidRound()
-        != other.getValidRound()) return false;
-    if (getNodeId()
-        != other.getNodeId()) return false;
+    if (!getHashValue()
+        .equals(other.getHashValue())) return false;
     if (!getSignature()
         .equals(other.getSignature())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
@@ -306,18 +332,20 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
+    hash = (37 * hash) + NODEID_FIELD_NUMBER;
+    hash = (53 * hash) + getNodeId();
     hash = (37 * hash) + HEIGHT_FIELD_NUMBER;
     hash = (53 * hash) + getHeight();
     hash = (37 * hash) + ROUND_FIELD_NUMBER;
     hash = (53 * hash) + getRound();
+    hash = (37 * hash) + VALIDROUND_FIELD_NUMBER;
+    hash = (53 * hash) + getValidRound();
     if (hasData()) {
       hash = (37 * hash) + DATA_FIELD_NUMBER;
       hash = (53 * hash) + getData().hashCode();
     }
-    hash = (37 * hash) + VALIDROUND_FIELD_NUMBER;
-    hash = (53 * hash) + getValidRound();
-    hash = (37 * hash) + NODEID_FIELD_NUMBER;
-    hash = (53 * hash) + getNodeId();
+    hash = (37 * hash) + HASHVALUE_FIELD_NUMBER;
+    hash = (53 * hash) + getHashValue().hashCode();
     hash = (37 * hash) + SIGNATURE_FIELD_NUMBER;
     hash = (53 * hash) + getSignature().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
@@ -453,9 +481,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      nodeId_ = 0;
+
       height_ = 0;
 
       round_ = 0;
+
+      validRound_ = 0;
 
       if (dataBuilder_ == null) {
         data_ = null;
@@ -463,9 +495,7 @@ private static final long serialVersionUID = 0L;
         data_ = null;
         dataBuilder_ = null;
       }
-      validRound_ = 0;
-
-      nodeId_ = 0;
+      hashValue_ = com.google.protobuf.ByteString.EMPTY;
 
       signature_ = com.google.protobuf.ByteString.EMPTY;
 
@@ -495,15 +525,16 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.pbft.tendermint.core.grpc.GProposeMessage buildPartial() {
       com.pbft.tendermint.core.grpc.GProposeMessage result = new com.pbft.tendermint.core.grpc.GProposeMessage(this);
+      result.nodeId_ = nodeId_;
       result.height_ = height_;
       result.round_ = round_;
+      result.validRound_ = validRound_;
       if (dataBuilder_ == null) {
         result.data_ = data_;
       } else {
         result.data_ = dataBuilder_.build();
       }
-      result.validRound_ = validRound_;
-      result.nodeId_ = nodeId_;
+      result.hashValue_ = hashValue_;
       result.signature_ = signature_;
       onBuilt();
       return result;
@@ -553,20 +584,23 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(com.pbft.tendermint.core.grpc.GProposeMessage other) {
       if (other == com.pbft.tendermint.core.grpc.GProposeMessage.getDefaultInstance()) return this;
+      if (other.getNodeId() != 0) {
+        setNodeId(other.getNodeId());
+      }
       if (other.getHeight() != 0) {
         setHeight(other.getHeight());
       }
       if (other.getRound() != 0) {
         setRound(other.getRound());
       }
-      if (other.hasData()) {
-        mergeData(other.getData());
-      }
       if (other.getValidRound() != 0) {
         setValidRound(other.getValidRound());
       }
-      if (other.getNodeId() != 0) {
-        setNodeId(other.getNodeId());
+      if (other.hasData()) {
+        mergeData(other.getData());
+      }
+      if (other.getHashValue() != com.google.protobuf.ByteString.EMPTY) {
+        setHashValue(other.getHashValue());
       }
       if (other.getSignature() != com.google.protobuf.ByteString.EMPTY) {
         setSignature(other.getSignature());
@@ -600,9 +634,40 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
+    private int nodeId_ ;
+    /**
+     * <code>int32 nodeId = 1;</code>
+     * @return The nodeId.
+     */
+    @java.lang.Override
+    public int getNodeId() {
+      return nodeId_;
+    }
+    /**
+     * <code>int32 nodeId = 1;</code>
+     * @param value The nodeId to set.
+     * @return This builder for chaining.
+     */
+    public Builder setNodeId(int value) {
+      
+      nodeId_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>int32 nodeId = 1;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearNodeId() {
+      
+      nodeId_ = 0;
+      onChanged();
+      return this;
+    }
+
     private int height_ ;
     /**
-     * <code>int32 height = 1;</code>
+     * <code>int32 height = 2;</code>
      * @return The height.
      */
     @java.lang.Override
@@ -610,7 +675,7 @@ private static final long serialVersionUID = 0L;
       return height_;
     }
     /**
-     * <code>int32 height = 1;</code>
+     * <code>int32 height = 2;</code>
      * @param value The height to set.
      * @return This builder for chaining.
      */
@@ -621,7 +686,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>int32 height = 1;</code>
+     * <code>int32 height = 2;</code>
      * @return This builder for chaining.
      */
     public Builder clearHeight() {
@@ -633,7 +698,7 @@ private static final long serialVersionUID = 0L;
 
     private int round_ ;
     /**
-     * <code>int32 round = 2;</code>
+     * <code>int32 round = 3;</code>
      * @return The round.
      */
     @java.lang.Override
@@ -641,7 +706,7 @@ private static final long serialVersionUID = 0L;
       return round_;
     }
     /**
-     * <code>int32 round = 2;</code>
+     * <code>int32 round = 3;</code>
      * @param value The round to set.
      * @return This builder for chaining.
      */
@@ -652,7 +717,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>int32 round = 2;</code>
+     * <code>int32 round = 3;</code>
      * @return This builder for chaining.
      */
     public Builder clearRound() {
@@ -660,125 +725,6 @@ private static final long serialVersionUID = 0L;
       round_ = 0;
       onChanged();
       return this;
-    }
-
-    private com.pbft.tendermint.core.grpc.GData data_;
-    private com.google.protobuf.SingleFieldBuilderV3<
-        com.pbft.tendermint.core.grpc.GData, com.pbft.tendermint.core.grpc.GData.Builder, com.pbft.tendermint.core.grpc.GDataOrBuilder> dataBuilder_;
-    /**
-     * <code>.tendermint.GData data = 3;</code>
-     * @return Whether the data field is set.
-     */
-    public boolean hasData() {
-      return dataBuilder_ != null || data_ != null;
-    }
-    /**
-     * <code>.tendermint.GData data = 3;</code>
-     * @return The data.
-     */
-    public com.pbft.tendermint.core.grpc.GData getData() {
-      if (dataBuilder_ == null) {
-        return data_ == null ? com.pbft.tendermint.core.grpc.GData.getDefaultInstance() : data_;
-      } else {
-        return dataBuilder_.getMessage();
-      }
-    }
-    /**
-     * <code>.tendermint.GData data = 3;</code>
-     */
-    public Builder setData(com.pbft.tendermint.core.grpc.GData value) {
-      if (dataBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        data_ = value;
-        onChanged();
-      } else {
-        dataBuilder_.setMessage(value);
-      }
-
-      return this;
-    }
-    /**
-     * <code>.tendermint.GData data = 3;</code>
-     */
-    public Builder setData(
-        com.pbft.tendermint.core.grpc.GData.Builder builderForValue) {
-      if (dataBuilder_ == null) {
-        data_ = builderForValue.build();
-        onChanged();
-      } else {
-        dataBuilder_.setMessage(builderForValue.build());
-      }
-
-      return this;
-    }
-    /**
-     * <code>.tendermint.GData data = 3;</code>
-     */
-    public Builder mergeData(com.pbft.tendermint.core.grpc.GData value) {
-      if (dataBuilder_ == null) {
-        if (data_ != null) {
-          data_ =
-            com.pbft.tendermint.core.grpc.GData.newBuilder(data_).mergeFrom(value).buildPartial();
-        } else {
-          data_ = value;
-        }
-        onChanged();
-      } else {
-        dataBuilder_.mergeFrom(value);
-      }
-
-      return this;
-    }
-    /**
-     * <code>.tendermint.GData data = 3;</code>
-     */
-    public Builder clearData() {
-      if (dataBuilder_ == null) {
-        data_ = null;
-        onChanged();
-      } else {
-        data_ = null;
-        dataBuilder_ = null;
-      }
-
-      return this;
-    }
-    /**
-     * <code>.tendermint.GData data = 3;</code>
-     */
-    public com.pbft.tendermint.core.grpc.GData.Builder getDataBuilder() {
-      
-      onChanged();
-      return getDataFieldBuilder().getBuilder();
-    }
-    /**
-     * <code>.tendermint.GData data = 3;</code>
-     */
-    public com.pbft.tendermint.core.grpc.GDataOrBuilder getDataOrBuilder() {
-      if (dataBuilder_ != null) {
-        return dataBuilder_.getMessageOrBuilder();
-      } else {
-        return data_ == null ?
-            com.pbft.tendermint.core.grpc.GData.getDefaultInstance() : data_;
-      }
-    }
-    /**
-     * <code>.tendermint.GData data = 3;</code>
-     */
-    private com.google.protobuf.SingleFieldBuilderV3<
-        com.pbft.tendermint.core.grpc.GData, com.pbft.tendermint.core.grpc.GData.Builder, com.pbft.tendermint.core.grpc.GDataOrBuilder> 
-        getDataFieldBuilder() {
-      if (dataBuilder_ == null) {
-        dataBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            com.pbft.tendermint.core.grpc.GData, com.pbft.tendermint.core.grpc.GData.Builder, com.pbft.tendermint.core.grpc.GDataOrBuilder>(
-                getData(),
-                getParentForChildren(),
-                isClean());
-        data_ = null;
-      }
-      return dataBuilder_;
     }
 
     private int validRound_ ;
@@ -812,40 +758,162 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private int nodeId_ ;
+    private com.pbft.tendermint.core.grpc.GData data_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.pbft.tendermint.core.grpc.GData, com.pbft.tendermint.core.grpc.GData.Builder, com.pbft.tendermint.core.grpc.GDataOrBuilder> dataBuilder_;
     /**
-     * <code>int32 nodeId = 5;</code>
-     * @return The nodeId.
+     * <code>.tendermint.GData data = 5;</code>
+     * @return Whether the data field is set.
      */
-    @java.lang.Override
-    public int getNodeId() {
-      return nodeId_;
+    public boolean hasData() {
+      return dataBuilder_ != null || data_ != null;
     }
     /**
-     * <code>int32 nodeId = 5;</code>
-     * @param value The nodeId to set.
+     * <code>.tendermint.GData data = 5;</code>
+     * @return The data.
+     */
+    public com.pbft.tendermint.core.grpc.GData getData() {
+      if (dataBuilder_ == null) {
+        return data_ == null ? com.pbft.tendermint.core.grpc.GData.getDefaultInstance() : data_;
+      } else {
+        return dataBuilder_.getMessage();
+      }
+    }
+    /**
+     * <code>.tendermint.GData data = 5;</code>
+     */
+    public Builder setData(com.pbft.tendermint.core.grpc.GData value) {
+      if (dataBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        data_ = value;
+        onChanged();
+      } else {
+        dataBuilder_.setMessage(value);
+      }
+
+      return this;
+    }
+    /**
+     * <code>.tendermint.GData data = 5;</code>
+     */
+    public Builder setData(
+        com.pbft.tendermint.core.grpc.GData.Builder builderForValue) {
+      if (dataBuilder_ == null) {
+        data_ = builderForValue.build();
+        onChanged();
+      } else {
+        dataBuilder_.setMessage(builderForValue.build());
+      }
+
+      return this;
+    }
+    /**
+     * <code>.tendermint.GData data = 5;</code>
+     */
+    public Builder mergeData(com.pbft.tendermint.core.grpc.GData value) {
+      if (dataBuilder_ == null) {
+        if (data_ != null) {
+          data_ =
+            com.pbft.tendermint.core.grpc.GData.newBuilder(data_).mergeFrom(value).buildPartial();
+        } else {
+          data_ = value;
+        }
+        onChanged();
+      } else {
+        dataBuilder_.mergeFrom(value);
+      }
+
+      return this;
+    }
+    /**
+     * <code>.tendermint.GData data = 5;</code>
+     */
+    public Builder clearData() {
+      if (dataBuilder_ == null) {
+        data_ = null;
+        onChanged();
+      } else {
+        data_ = null;
+        dataBuilder_ = null;
+      }
+
+      return this;
+    }
+    /**
+     * <code>.tendermint.GData data = 5;</code>
+     */
+    public com.pbft.tendermint.core.grpc.GData.Builder getDataBuilder() {
+      
+      onChanged();
+      return getDataFieldBuilder().getBuilder();
+    }
+    /**
+     * <code>.tendermint.GData data = 5;</code>
+     */
+    public com.pbft.tendermint.core.grpc.GDataOrBuilder getDataOrBuilder() {
+      if (dataBuilder_ != null) {
+        return dataBuilder_.getMessageOrBuilder();
+      } else {
+        return data_ == null ?
+            com.pbft.tendermint.core.grpc.GData.getDefaultInstance() : data_;
+      }
+    }
+    /**
+     * <code>.tendermint.GData data = 5;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.pbft.tendermint.core.grpc.GData, com.pbft.tendermint.core.grpc.GData.Builder, com.pbft.tendermint.core.grpc.GDataOrBuilder> 
+        getDataFieldBuilder() {
+      if (dataBuilder_ == null) {
+        dataBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.pbft.tendermint.core.grpc.GData, com.pbft.tendermint.core.grpc.GData.Builder, com.pbft.tendermint.core.grpc.GDataOrBuilder>(
+                getData(),
+                getParentForChildren(),
+                isClean());
+        data_ = null;
+      }
+      return dataBuilder_;
+    }
+
+    private com.google.protobuf.ByteString hashValue_ = com.google.protobuf.ByteString.EMPTY;
+    /**
+     * <code>bytes hashValue = 6;</code>
+     * @return The hashValue.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString getHashValue() {
+      return hashValue_;
+    }
+    /**
+     * <code>bytes hashValue = 6;</code>
+     * @param value The hashValue to set.
      * @return This builder for chaining.
      */
-    public Builder setNodeId(int value) {
-      
-      nodeId_ = value;
+    public Builder setHashValue(com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      hashValue_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>int32 nodeId = 5;</code>
+     * <code>bytes hashValue = 6;</code>
      * @return This builder for chaining.
      */
-    public Builder clearNodeId() {
+    public Builder clearHashValue() {
       
-      nodeId_ = 0;
+      hashValue_ = getDefaultInstance().getHashValue();
       onChanged();
       return this;
     }
 
     private com.google.protobuf.ByteString signature_ = com.google.protobuf.ByteString.EMPTY;
     /**
-     * <code>bytes signature = 6;</code>
+     * <code>bytes signature = 7;</code>
      * @return The signature.
      */
     @java.lang.Override
@@ -853,7 +921,7 @@ private static final long serialVersionUID = 0L;
       return signature_;
     }
     /**
-     * <code>bytes signature = 6;</code>
+     * <code>bytes signature = 7;</code>
      * @param value The signature to set.
      * @return This builder for chaining.
      */
@@ -867,7 +935,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>bytes signature = 6;</code>
+     * <code>bytes signature = 7;</code>
      * @return This builder for chaining.
      */
     public Builder clearSignature() {

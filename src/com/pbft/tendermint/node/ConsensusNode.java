@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.apache.logging.log4j.Logger;
 
 import java.security.KeyPair;
 import java.util.List;
@@ -25,6 +26,8 @@ public abstract class ConsensusNode {
 	protected String address;
 	protected int port;
 	protected GTendermintConsensusServer server;
+	protected Logger logger;
 
-	public abstract void start();
+	public abstract void startServer();
+
 }

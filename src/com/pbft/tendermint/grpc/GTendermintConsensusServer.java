@@ -9,20 +9,23 @@ import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import io.grpc.stub.StreamObserver;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
 
 /**
  * @author chungnt
  * @version 1.0
  * @date 08/08/2023
  */
+@Getter
 public class GTendermintConsensusServer {
-	private static final Logger LOGGER = Logger.getLogger(GTendermintConsensusServer.class.getName());
+	private static final Logger LOGGER = LogManager.getLogger(GTendermintConsensusServer.class.getName());
 
 	private final int port;
 	private final Server server;
@@ -52,18 +55,17 @@ public class GTendermintConsensusServer {
 	 */
 	public void start() throws IOException {
 		server.start();
-		LOGGER.info("Server started, listening on " + port);
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			@Override
 			public void run() {
 				// Use stderr here since the logger may have been reset by its JVM shutdown hook.
-				System.err.println("*** shutting down gRPC server since JVM is shutting down");
+				LOGGER.error("*** shutting down gRPC server since JVM is shutting down");
 				try {
 					GTendermintConsensusServer.this.stop();
-				} catch (InterruptedException e) {
-					e.printStackTrace(System.err);
+				} catch (InterruptedException ex) {
+					LOGGER.error(ex.getMessage(), ex);
 				}
-				System.err.println("*** server shut down");
+				LOGGER.error("*** server shut down");
 			}
 		});
 	}
@@ -90,6 +92,13 @@ public class GTendermintConsensusServer {
 	@AllArgsConstructor
 	private static class TendermintConsensusService extends GConsensusProtocolServiceGrpc.GConsensusProtocolServiceImplBase {
 		private IProcessor processor;
+
+		@Override
+		public void ping(GPingMessage request, StreamObserver<GPongMessage> responseObserver) {
+			GPongMessage result = processor.onPingMessage(request);
+			responseObserver.onNext(result);
+			responseObserver.onCompleted();
+		}
 
 		@Override
 		public void onProposeMessage(GProposeMessage request, StreamObserver<GResult> responseObserver) {

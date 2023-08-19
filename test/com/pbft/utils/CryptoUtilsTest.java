@@ -79,8 +79,8 @@ public class CryptoUtilsTest {
 		String rawData = "chungnt";
 		byte[] rawDataByte = rawData.getBytes(StandardCharsets.UTF_8);
 
-		byte[] encryptedMsgByte = CryptoUtils.encrypt(rawDataByte, keyPair.getPublic());
-		byte[] decryptedMsgByte = CryptoUtils.decrypt(encryptedMsgByte, keyPair.getPrivate());
+		byte[] encryptedMsgByte = CryptoUtils.encrypt(rawDataByte, keyPair.getPrivate());
+		byte[] decryptedMsgByte = CryptoUtils.decrypt(encryptedMsgByte, keyPair.getPublic());
 		String decryptedMsg = new String(decryptedMsgByte, StandardCharsets.UTF_8);
 
 		Assert.assertTrue(String.format("[encryptDecryptMethodTest]- rawData: %s, decryptedData: %s", rawData, decryptedMsg),

@@ -1,9 +1,6 @@
 package com.pbft.tendermint.node;
 
-import com.pbft.tendermint.core.grpc.GPreCommitMessage;
-import com.pbft.tendermint.core.grpc.GPreVoteMessage;
-import com.pbft.tendermint.core.grpc.GProposeMessage;
-import com.pbft.tendermint.core.grpc.GResult;
+import com.pbft.tendermint.core.grpc.*;
 
 import java.util.logging.Logger;
 
@@ -14,6 +11,12 @@ import java.util.logging.Logger;
  */
 public class DefaultProcessor implements IProcessor {
 	private static final Logger LOGGER = Logger.getLogger(DefaultProcessor.class.getName());
+
+	@Override
+	public GPongMessage onPingMessage(GPingMessage message) {
+		LOGGER.info("onPingMessage: " + message);
+		return GPongMessage.newBuilder().setError(0).setNodeId(0).build();
+	}
 
 	@Override
 	public GResult onReceiveProposeMessage(GProposeMessage message) {

@@ -15,6 +15,16 @@ public final class TendermintConsensusProto {
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_tendermint_GPingMessage_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_tendermint_GPingMessage_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_tendermint_GPongMessage_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_tendermint_GPongMessage_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
     internal_static_tendermint_GData_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -25,15 +35,15 @@ public final class TendermintConsensusProto {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_tendermint_GProposeMessage_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_tendermint_GPreCommitMessage_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_tendermint_GPreCommitMessage_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
     internal_static_tendermint_GPreVoteMessage_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_tendermint_GPreVoteMessage_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_tendermint_GPreCommitMessage_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_tendermint_GPreCommitMessage_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_tendermint_GResult_descriptor;
   static final 
@@ -54,19 +64,23 @@ public final class TendermintConsensusProto {
   static {
     java.lang.String[] descriptorData = {
       "\n#tendermint_consensus_protocol.proto\022\nt" +
-      "endermint\"(\n\005GData\022\021\n\ttimestamp\030\001 \001(\004\022\014\n" +
-      "\004data\030\002 \001(\t\"\210\001\n\017GProposeMessage\022\016\n\006heigh" +
-      "t\030\001 \001(\005\022\r\n\005round\030\002 \001(\005\022\037\n\004data\030\003 \001(\0132\021.t" +
-      "endermint.GData\022\022\n\nvalidRound\030\004 \001(\005\022\016\n\006n" +
-      "odeId\030\005 \001(\005\022\021\n\tsignature\030\006 \001(\014\"h\n\021GPreCo" +
-      "mmitMessage\022\016\n\006height\030\001 \001(\005\022\r\n\005round\030\002 \001" +
-      "(\005\022\021\n\thashValue\030\003 \001(\014\022\021\n\tsignature\030\004 \001(\014" +
-      "\022\016\n\006nodeId\030\005 \001(\005\"f\n\017GPreVoteMessage\022\016\n\006h" +
-      "eight\030\001 \001(\005\022\r\n\005round\030\002 \001(\005\022\021\n\thashValue\030" +
-      "\003 \001(\014\022\021\n\tsignature\030\004 \001(\014\022\016\n\006nodeId\030\005 \001(\005" +
-      "\"&\n\007GResult\022\r\n\005error\030\001 \001(\005\022\014\n\004data\030\002 \001(\t" +
-      "\"\032\n\010GRequest\022\016\n\006status\030\001 \001(\0052\266\002\n\031GConsen" +
-      "susProtocolService\022F\n\020OnProposeMessage\022\033" +
+      "endermint\"\036\n\014GPingMessage\022\016\n\006nodeId\030\001 \001(" +
+      "\005\"-\n\014GPongMessage\022\r\n\005error\030\001 \001(\005\022\016\n\006node" +
+      "Id\030\002 \001(\005\"(\n\005GData\022\021\n\ttimestamp\030\001 \001(\004\022\014\n\004" +
+      "data\030\002 \001(\t\"\233\001\n\017GProposeMessage\022\016\n\006nodeId" +
+      "\030\001 \001(\005\022\016\n\006height\030\002 \001(\005\022\r\n\005round\030\003 \001(\005\022\022\n" +
+      "\nvalidRound\030\004 \001(\005\022\037\n\004data\030\005 \001(\0132\021.tender" +
+      "mint.GData\022\021\n\thashValue\030\006 \001(\014\022\021\n\tsignatu" +
+      "re\030\007 \001(\014\"f\n\017GPreVoteMessage\022\016\n\006height\030\001 " +
+      "\001(\005\022\r\n\005round\030\002 \001(\005\022\021\n\thashValue\030\003 \001(\014\022\021\n" +
+      "\tsignature\030\004 \001(\014\022\016\n\006nodeId\030\005 \001(\005\"h\n\021GPre" +
+      "CommitMessage\022\016\n\006height\030\001 \001(\005\022\r\n\005round\030\002" +
+      " \001(\005\022\021\n\thashValue\030\003 \001(\014\022\021\n\tsignature\030\004 \001" +
+      "(\014\022\016\n\006nodeId\030\005 \001(\005\"&\n\007GResult\022\r\n\005error\030\001" +
+      " \001(\005\022\014\n\004data\030\002 \001(\t\"\032\n\010GRequest\022\016\n\006status" +
+      "\030\001 \001(\0052\364\002\n\031GConsensusProtocolService\022<\n\004" +
+      "Ping\022\030.tendermint.GPingMessage\032\030.tenderm" +
+      "int.GPongMessage\"\000\022F\n\020OnProposeMessage\022\033" +
       ".tendermint.GProposeMessage\032\023.tendermint" +
       ".GResult\"\000\022F\n\020OnPreVoteMessage\022\033.tenderm" +
       "int.GPreVoteMessage\032\023.tendermint.GResult" +
@@ -81,38 +95,50 @@ public final class TendermintConsensusProto {
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         });
-    internal_static_tendermint_GData_descriptor =
+    internal_static_tendermint_GPingMessage_descriptor =
       getDescriptor().getMessageTypes().get(0);
+    internal_static_tendermint_GPingMessage_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_tendermint_GPingMessage_descriptor,
+        new java.lang.String[] { "NodeId", });
+    internal_static_tendermint_GPongMessage_descriptor =
+      getDescriptor().getMessageTypes().get(1);
+    internal_static_tendermint_GPongMessage_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_tendermint_GPongMessage_descriptor,
+        new java.lang.String[] { "Error", "NodeId", });
+    internal_static_tendermint_GData_descriptor =
+      getDescriptor().getMessageTypes().get(2);
     internal_static_tendermint_GData_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_tendermint_GData_descriptor,
         new java.lang.String[] { "Timestamp", "Data", });
     internal_static_tendermint_GProposeMessage_descriptor =
-      getDescriptor().getMessageTypes().get(1);
+      getDescriptor().getMessageTypes().get(3);
     internal_static_tendermint_GProposeMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_tendermint_GProposeMessage_descriptor,
-        new java.lang.String[] { "Height", "Round", "Data", "ValidRound", "NodeId", "Signature", });
-    internal_static_tendermint_GPreCommitMessage_descriptor =
-      getDescriptor().getMessageTypes().get(2);
-    internal_static_tendermint_GPreCommitMessage_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_tendermint_GPreCommitMessage_descriptor,
-        new java.lang.String[] { "Height", "Round", "HashValue", "Signature", "NodeId", });
+        new java.lang.String[] { "NodeId", "Height", "Round", "ValidRound", "Data", "HashValue", "Signature", });
     internal_static_tendermint_GPreVoteMessage_descriptor =
-      getDescriptor().getMessageTypes().get(3);
+      getDescriptor().getMessageTypes().get(4);
     internal_static_tendermint_GPreVoteMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_tendermint_GPreVoteMessage_descriptor,
         new java.lang.String[] { "Height", "Round", "HashValue", "Signature", "NodeId", });
+    internal_static_tendermint_GPreCommitMessage_descriptor =
+      getDescriptor().getMessageTypes().get(5);
+    internal_static_tendermint_GPreCommitMessage_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_tendermint_GPreCommitMessage_descriptor,
+        new java.lang.String[] { "Height", "Round", "HashValue", "Signature", "NodeId", });
     internal_static_tendermint_GResult_descriptor =
-      getDescriptor().getMessageTypes().get(4);
+      getDescriptor().getMessageTypes().get(6);
     internal_static_tendermint_GResult_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_tendermint_GResult_descriptor,
         new java.lang.String[] { "Error", "Data", });
     internal_static_tendermint_GRequest_descriptor =
-      getDescriptor().getMessageTypes().get(5);
+      getDescriptor().getMessageTypes().get(7);
     internal_static_tendermint_GRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_tendermint_GRequest_descriptor,
