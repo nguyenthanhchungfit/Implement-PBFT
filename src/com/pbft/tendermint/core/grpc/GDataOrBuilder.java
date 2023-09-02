@@ -14,14 +14,14 @@ public interface GDataOrBuilder extends
   long getTimestamp();
 
   /**
-   * <code>string data = 2;</code>
-   * @return The data.
+   * <code>string value = 2;</code>
+   * @return The value.
    */
-  java.lang.String getData();
+  java.lang.String getValue();
   /**
-   * <code>string data = 2;</code>
-   * @return The bytes for data.
+   * <code>string value = 2;</code>
+   * @return The bytes for value.
    */
   com.google.protobuf.ByteString
-      getDataBytes();
+      getValueBytes();
 }

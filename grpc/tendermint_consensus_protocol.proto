@@ -24,7 +24,7 @@ message GPongMessage {
 
 message GData {
   uint64 timestamp = 1;
-  string data = 2;
+  string value = 2;
 }
 
 message GProposeMessage {

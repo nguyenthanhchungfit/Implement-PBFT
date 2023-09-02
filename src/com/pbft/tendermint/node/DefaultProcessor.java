@@ -35,4 +35,9 @@ public class DefaultProcessor implements IProcessor {
 		LOGGER.info("onReceivePreCommitMessage: " + message);
 		return GResult.newBuilder().setError(0).setData("OK").build();
 	}
+
+	@Override
+	public void startConsensus() {
+		LOGGER.info("NOT IMPLEMENT");
+	}
 }

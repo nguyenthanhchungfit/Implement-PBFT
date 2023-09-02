@@ -14,7 +14,7 @@ import org.apache.logging.log4j.Logger;
 
 @NoArgsConstructor
 @AllArgsConstructor
-public class TimeoutProposeHandler implements Runnable {
+public class TimeoutPreVoteHandler implements Runnable {
 	private Logger logger;
 	private CompliantProcessor processor;
 	private int height;
@@ -22,7 +22,6 @@ public class TimeoutProposeHandler implements Runnable {
 
 	@Override
 	public void run() {
-//		logger.info("TimeoutProposeHandler at height: " + height + " round: " + round);
-//		processor.doTimeoutPropose(height, round);
+//		logger.info("TimeoutPreVoteHandler is running");
 	}
 }

@@ -30,4 +30,5 @@ public abstract class ConsensusNode {
 
 	public abstract void startServer();
 
+	public abstract void startConsensus();
 }

@@ -14,7 +14,39 @@
             <PatternLayout>
                 <Pattern>%d %p %c{1.} [%t] %m %ex%n</Pattern>
             </PatternLayout>
-            <SizeBasedTriggeringPolicy size="1 KB" />
+            <SizeBasedTriggeringPolicy size="100 MB"/>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+        <RollingFile name="node-2" fileName="logs/node-2.log" filePattern="log/node-2-%02i-%d{HH-MMddyyyy}.log"
+                     ignoreExceptions="false">
+            <PatternLayout>
+                <Pattern>%d %p %c{1.} [%t] %m %ex%n</Pattern>
+            </PatternLayout>
+            <SizeBasedTriggeringPolicy size="100 MB"/>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+        <RollingFile name="node-3" fileName="logs/node-3.log" filePattern="log/node-3-%02i-%d{HH-MMddyyyy}.log"
+                     ignoreExceptions="false">
+            <PatternLayout>
+                <Pattern>%d %p %c{1.} [%t] %m %ex%n</Pattern>
+            </PatternLayout>
+            <SizeBasedTriggeringPolicy size="100 MB"/>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+        <RollingFile name="node-4" fileName="logs/node-4.log" filePattern="log/node-4-%02i-%d{HH-MMddyyyy}.log"
+                     ignoreExceptions="false">
+            <PatternLayout>
+                <Pattern>%d %p %c{1.} [%t] %m %ex%n</Pattern>
+            </PatternLayout>
+            <SizeBasedTriggeringPolicy size="100 MB"/>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+        <RollingFile name="node-5" fileName="logs/node-5.log" filePattern="log/node-5-%02i-%d{HH-MMddyyyy}.log"
+                     ignoreExceptions="false">
+            <PatternLayout>
+                <Pattern>%d %p %c{1.} [%t] %m %ex%n</Pattern>
+            </PatternLayout>
+            <SizeBasedTriggeringPolicy size="100 MB"/>
             <DefaultRolloverStrategy max="10"/>
         </RollingFile>
     </Appenders>
@@ -25,6 +57,18 @@
         </Root>
         <Logger name="node-1" level="trace" additivity="false">
             <AppenderRef ref="node-1"/>
+        </Logger>
+        <Logger name="node-2" level="trace" additivity="false">
+            <AppenderRef ref="node-2"/>
+        </Logger>
+        <Logger name="node-3" level="trace" additivity="false">
+            <AppenderRef ref="node-3"/>
+        </Logger>
+        <Logger name="node-4" level="trace" additivity="false">
+            <AppenderRef ref="node-4"/>
+        </Logger>
+        <Logger name="node-5" level="trace" additivity="false">
+            <AppenderRef ref="node-5"/>
         </Logger>
     </Loggers>
 </Configuration>

@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyPair;
 import java.util.Collections;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * @author chungnt
@@ -31,12 +32,14 @@ import java.util.Collections;
 @AllArgsConstructor
 public class CompliantNode extends ConsensusNode {
 	private IProcessor processor;
+	private ThreadPoolExecutor executor;
 
 	public CompliantNode(String address, int port, int nodeId, KeyPair keyPair, IProcessor processor, Logger logger) {
 		super(nodeId, keyPair, Collections.EMPTY_LIST, address, port, null, null);
 		this.processor = processor;
 		this.logger = logger;
 		this.server = new GTendermintConsensusServer(port, processor);
+		this.executor = new ThreadPoolExecutor(8, 8, 0L, java.util.concurrent.TimeUnit.MILLISECONDS, new java.util.concurrent.LinkedBlockingQueue<Runnable>());
 	}
 
 	@Override
@@ -53,6 +56,12 @@ public class CompliantNode extends ConsensusNode {
 			}
 		}).start();
 		checkServerIsStarted();
+	}
+
+	@Override
+	public void startConsensus() {
+		this.logger.info("Node " + this.nodeId + " start consensus");
+		processor.startConsensus();
 	}
 
 	private void checkServerIsStarted() {
@@ -89,19 +98,34 @@ public class CompliantNode extends ConsensusNode {
 				.setSignature(ByteString.copyFrom(encryptData))
 				.build();
 		for (NeighborNode node : this.getNeighborNodes()) {
-			node.sendProposeMessage(proposeMsg);
+			this.getExecutor().execute(new Runnable() {
+				@Override
+				public void run() {
+					node.sendProposeMessage(proposeMsg);
+				}
+			});
 		}
 	}
 
 	public void broadcastPreVoteMessage(GPreVoteMessage msg) {
 		for (NeighborNode node : this.getNeighborNodes()) {
-			node.sendPreVoteMessage(msg);
+			this.getExecutor().execute(new Runnable() {
+				@Override
+				public void run() {
+					node.sendPreVoteMessage(msg);
+				}
+			});
 		}
 	}
 
 	public void broadcastPreCommitMessage(GPreCommitMessage msg) {
 		for (NeighborNode node : this.getNeighborNodes()) {
-			node.sendPreCommitMessage(msg);
+			this.getExecutor().execute(new Runnable() {
+				@Override
+				public void run() {
+					node.sendPreCommitMessage(msg);
+				}
+			});
 		}
 	}
 

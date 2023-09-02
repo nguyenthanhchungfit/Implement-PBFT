@@ -10,4 +10,5 @@ public interface IProcessor {
 	public GResult onReceivePreVoteMessage(GPreVoteMessage message);
 
 	public GResult onReceivePreCommitMessage(GPreCommitMessage message);
+	public void startConsensus();
 }

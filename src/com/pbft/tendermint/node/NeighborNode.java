@@ -45,19 +45,19 @@ public class NeighborNode {
 
 	public GResult sendProposeMessage(GProposeMessage msg) {
 		GResult result = this.client.sendProposeMessage(msg);
-		LOGGER.info(String.format("NodeId: " + nodeId + ", resp: " + result));
+//		LOGGER.info(String.format("NodeId: " + nodeId + ", resp: " + result));
 		return result;
 	}
 
 	public GResult sendPreVoteMessage(GPreVoteMessage msg) {
 		GResult result = this.client.sendPreVoteMessage(msg);
-		LOGGER.info(String.format("NodeId: " + nodeId + ", resp: " + result));
+//		LOGGER.info(String.format("NodeId: " + nodeId + ", resp: " + result));
 		return result;
 	}
 
 	public GResult sendPreCommitMessage(GPreCommitMessage msg) {
 		GResult result = this.client.sendPreCommitMessage(msg);
-		LOGGER.info(String.format("NodeId: " + nodeId + ", resp: " + result));
+//		LOGGER.info(String.format("NodeId: " + nodeId + ", resp: " + result));
 		return result;
 	}
 

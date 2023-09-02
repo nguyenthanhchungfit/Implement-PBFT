@@ -3,6 +3,7 @@ package com.pbft.app;
 import com.pbft.tendermint.common.ProposeNodeSelector;
 import com.pbft.tendermint.node.*;
 import com.pbft.utils.CryptoUtils;
+import com.pbft.utils.SystemUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.LoggerContext;
@@ -23,8 +24,8 @@ import java.util.List;
 public class TendermintApp {
 	private static final Logger LOGGER = LogManager.getLogger(TendermintApp.class);
 
-	public static void main(String[] args) throws InterruptedException {
-		int totalNodes = 5;
+	public static void main(String[] args) {
+		int totalNodes = 3;
 		List<ConsensusNode> nodes = new ArrayList<>();
 		int fromPort = 8000;
 		ProposeNodeSelector nodeSelector = new ProposeNodeSelector();
@@ -64,13 +65,17 @@ public class TendermintApp {
 			LOGGER.info("Setup done for node: " + node);
 		}
 
-		Thread.sleep(10000);
-		nodes.get(0);
-		int i = 0;
-//		for (NeighborNode neighborNode : nodes.get(0).getNeighborNodes()) {
-//			neighborNode.sendProposeMessage("ping at: " + i++);
-//		}
+		LOGGER.info("Sleep 5s");
+		SystemUtils.sleep(5000);
+		for (ConsensusNode node : nodes) {
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					node.startConsensus();
+				}
+			}).start();
+		}
 
-		Thread.sleep(1000000);
+		SystemUtils.sleep(100000000);
 	}
 }

@@ -16,7 +16,7 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private GData() {
-    data_ = "";
+    value_ = "";
   }
 
   @java.lang.Override
@@ -57,7 +57,7 @@ private static final long serialVersionUID = 0L;
           case 18: {
             java.lang.String s = input.readStringRequireUtf8();
 
-            data_ = s;
+            value_ = s;
             break;
           }
           default: {
@@ -103,38 +103,38 @@ private static final long serialVersionUID = 0L;
     return timestamp_;
   }
 
-  public static final int DATA_FIELD_NUMBER = 2;
-  private volatile java.lang.Object data_;
+  public static final int VALUE_FIELD_NUMBER = 2;
+  private volatile java.lang.Object value_;
   /**
-   * <code>string data = 2;</code>
-   * @return The data.
+   * <code>string value = 2;</code>
+   * @return The value.
    */
   @java.lang.Override
-  public java.lang.String getData() {
-    java.lang.Object ref = data_;
+  public java.lang.String getValue() {
+    java.lang.Object ref = value_;
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
     } else {
       com.google.protobuf.ByteString bs = 
           (com.google.protobuf.ByteString) ref;
       java.lang.String s = bs.toStringUtf8();
-      data_ = s;
+      value_ = s;
       return s;
     }
   }
   /**
-   * <code>string data = 2;</code>
-   * @return The bytes for data.
+   * <code>string value = 2;</code>
+   * @return The bytes for value.
    */
   @java.lang.Override
   public com.google.protobuf.ByteString
-      getDataBytes() {
-    java.lang.Object ref = data_;
+      getValueBytes() {
+    java.lang.Object ref = value_;
     if (ref instanceof java.lang.String) {
       com.google.protobuf.ByteString b = 
           com.google.protobuf.ByteString.copyFromUtf8(
               (java.lang.String) ref);
-      data_ = b;
+      value_ = b;
       return b;
     } else {
       return (com.google.protobuf.ByteString) ref;
@@ -158,8 +158,8 @@ private static final long serialVersionUID = 0L;
     if (timestamp_ != 0L) {
       output.writeUInt64(1, timestamp_);
     }
-    if (!getDataBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, data_);
+    if (!getValueBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 2, value_);
     }
     unknownFields.writeTo(output);
   }
@@ -174,8 +174,8 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeUInt64Size(1, timestamp_);
     }
-    if (!getDataBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, data_);
+    if (!getValueBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, value_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -194,8 +194,8 @@ private static final long serialVersionUID = 0L;
 
     if (getTimestamp()
         != other.getTimestamp()) return false;
-    if (!getData()
-        .equals(other.getData())) return false;
+    if (!getValue()
+        .equals(other.getValue())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -210,8 +210,8 @@ private static final long serialVersionUID = 0L;
     hash = (37 * hash) + TIMESTAMP_FIELD_NUMBER;
     hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
         getTimestamp());
-    hash = (37 * hash) + DATA_FIELD_NUMBER;
-    hash = (53 * hash) + getData().hashCode();
+    hash = (37 * hash) + VALUE_FIELD_NUMBER;
+    hash = (53 * hash) + getValue().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -347,7 +347,7 @@ private static final long serialVersionUID = 0L;
       super.clear();
       timestamp_ = 0L;
 
-      data_ = "";
+      value_ = "";
 
       return this;
     }
@@ -376,7 +376,7 @@ private static final long serialVersionUID = 0L;
     public com.pbft.tendermint.core.grpc.GData buildPartial() {
       com.pbft.tendermint.core.grpc.GData result = new com.pbft.tendermint.core.grpc.GData(this);
       result.timestamp_ = timestamp_;
-      result.data_ = data_;
+      result.value_ = value_;
       onBuilt();
       return result;
     }
@@ -428,8 +428,8 @@ private static final long serialVersionUID = 0L;
       if (other.getTimestamp() != 0L) {
         setTimestamp(other.getTimestamp());
       }
-      if (!other.getData().isEmpty()) {
-        data_ = other.data_;
+      if (!other.getValue().isEmpty()) {
+        value_ = other.value_;
         onChanged();
       }
       this.mergeUnknownFields(other.unknownFields);
@@ -492,78 +492,78 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private java.lang.Object data_ = "";
+    private java.lang.Object value_ = "";
     /**
-     * <code>string data = 2;</code>
-     * @return The data.
+     * <code>string value = 2;</code>
+     * @return The value.
      */
-    public java.lang.String getData() {
-      java.lang.Object ref = data_;
+    public java.lang.String getValue() {
+      java.lang.Object ref = value_;
       if (!(ref instanceof java.lang.String)) {
         com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        data_ = s;
+        value_ = s;
         return s;
       } else {
         return (java.lang.String) ref;
       }
     }
     /**
-     * <code>string data = 2;</code>
-     * @return The bytes for data.
+     * <code>string value = 2;</code>
+     * @return The bytes for value.
      */
     public com.google.protobuf.ByteString
-        getDataBytes() {
-      java.lang.Object ref = data_;
+        getValueBytes() {
+      java.lang.Object ref = value_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        data_ = b;
+        value_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
     }
     /**
-     * <code>string data = 2;</code>
-     * @param value The data to set.
+     * <code>string value = 2;</code>
+     * @param value The value to set.
      * @return This builder for chaining.
      */
-    public Builder setData(
+    public Builder setValue(
         java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
   }
   
-      data_ = value;
+      value_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>string data = 2;</code>
+     * <code>string value = 2;</code>
      * @return This builder for chaining.
      */
-    public Builder clearData() {
+    public Builder clearValue() {
       
-      data_ = getDefaultInstance().getData();
+      value_ = getDefaultInstance().getValue();
       onChanged();
       return this;
     }
     /**
-     * <code>string data = 2;</code>
-     * @param value The bytes for data to set.
+     * <code>string value = 2;</code>
+     * @param value The bytes for value to set.
      * @return This builder for chaining.
      */
-    public Builder setDataBytes(
+    public Builder setValueBytes(
         com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
       
-      data_ = value;
+      value_ = value;
       onChanged();
       return this;
     }

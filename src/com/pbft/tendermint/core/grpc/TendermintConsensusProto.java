@@ -66,30 +66,30 @@ public final class TendermintConsensusProto {
       "\n#tendermint_consensus_protocol.proto\022\nt" +
       "endermint\"\036\n\014GPingMessage\022\016\n\006nodeId\030\001 \001(" +
       "\005\"-\n\014GPongMessage\022\r\n\005error\030\001 \001(\005\022\016\n\006node" +
-      "Id\030\002 \001(\005\"(\n\005GData\022\021\n\ttimestamp\030\001 \001(\004\022\014\n\004" +
-      "data\030\002 \001(\t\"\233\001\n\017GProposeMessage\022\016\n\006nodeId" +
-      "\030\001 \001(\005\022\016\n\006height\030\002 \001(\005\022\r\n\005round\030\003 \001(\005\022\022\n" +
-      "\nvalidRound\030\004 \001(\005\022\037\n\004data\030\005 \001(\0132\021.tender" +
-      "mint.GData\022\021\n\thashValue\030\006 \001(\014\022\021\n\tsignatu" +
-      "re\030\007 \001(\014\"f\n\017GPreVoteMessage\022\016\n\006height\030\001 " +
-      "\001(\005\022\r\n\005round\030\002 \001(\005\022\021\n\thashValue\030\003 \001(\014\022\021\n" +
-      "\tsignature\030\004 \001(\014\022\016\n\006nodeId\030\005 \001(\005\"h\n\021GPre" +
-      "CommitMessage\022\016\n\006height\030\001 \001(\005\022\r\n\005round\030\002" +
-      " \001(\005\022\021\n\thashValue\030\003 \001(\014\022\021\n\tsignature\030\004 \001" +
-      "(\014\022\016\n\006nodeId\030\005 \001(\005\"&\n\007GResult\022\r\n\005error\030\001" +
-      " \001(\005\022\014\n\004data\030\002 \001(\t\"\032\n\010GRequest\022\016\n\006status" +
-      "\030\001 \001(\0052\364\002\n\031GConsensusProtocolService\022<\n\004" +
-      "Ping\022\030.tendermint.GPingMessage\032\030.tenderm" +
-      "int.GPongMessage\"\000\022F\n\020OnProposeMessage\022\033" +
-      ".tendermint.GProposeMessage\032\023.tendermint" +
-      ".GResult\"\000\022F\n\020OnPreVoteMessage\022\033.tenderm" +
-      "int.GPreVoteMessage\032\023.tendermint.GResult" +
-      "\"\000\022J\n\022OnPreCommitMessage\022\035.tendermint.GP" +
-      "reCommitMessage\032\023.tendermint.GResult\"\000\022=" +
-      "\n\016StartConsensus\022\024.tendermint.GRequest\032\023" +
-      ".tendermint.GResult\"\000B;\n\035com.pbft.tender" +
-      "mint.core.grpcB\030TendermintConsensusProto" +
-      "P\001b\006proto3"
+      "Id\030\002 \001(\005\")\n\005GData\022\021\n\ttimestamp\030\001 \001(\004\022\r\n\005" +
+      "value\030\002 \001(\t\"\233\001\n\017GProposeMessage\022\016\n\006nodeI" +
+      "d\030\001 \001(\005\022\016\n\006height\030\002 \001(\005\022\r\n\005round\030\003 \001(\005\022\022" +
+      "\n\nvalidRound\030\004 \001(\005\022\037\n\004data\030\005 \001(\0132\021.tende" +
+      "rmint.GData\022\021\n\thashValue\030\006 \001(\014\022\021\n\tsignat" +
+      "ure\030\007 \001(\014\"f\n\017GPreVoteMessage\022\016\n\006height\030\001" +
+      " \001(\005\022\r\n\005round\030\002 \001(\005\022\021\n\thashValue\030\003 \001(\014\022\021" +
+      "\n\tsignature\030\004 \001(\014\022\016\n\006nodeId\030\005 \001(\005\"h\n\021GPr" +
+      "eCommitMessage\022\016\n\006height\030\001 \001(\005\022\r\n\005round\030" +
+      "\002 \001(\005\022\021\n\thashValue\030\003 \001(\014\022\021\n\tsignature\030\004 " +
+      "\001(\014\022\016\n\006nodeId\030\005 \001(\005\"&\n\007GResult\022\r\n\005error\030" +
+      "\001 \001(\005\022\014\n\004data\030\002 \001(\t\"\032\n\010GRequest\022\016\n\006statu" +
+      "s\030\001 \001(\0052\364\002\n\031GConsensusProtocolService\022<\n" +
+      "\004Ping\022\030.tendermint.GPingMessage\032\030.tender" +
+      "mint.GPongMessage\"\000\022F\n\020OnProposeMessage\022" +
+      "\033.tendermint.GProposeMessage\032\023.tendermin" +
+      "t.GResult\"\000\022F\n\020OnPreVoteMessage\022\033.tender" +
+      "mint.GPreVoteMessage\032\023.tendermint.GResul" +
+      "t\"\000\022J\n\022OnPreCommitMessage\022\035.tendermint.G" +
+      "PreCommitMessage\032\023.tendermint.GResult\"\000\022" +
+      "=\n\016StartConsensus\022\024.tendermint.GRequest\032" +
+      "\023.tendermint.GResult\"\000B;\n\035com.pbft.tende" +
+      "rmint.core.grpcB\030TendermintConsensusProt" +
+      "oP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -112,7 +112,7 @@ public final class TendermintConsensusProto {
     internal_static_tendermint_GData_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_tendermint_GData_descriptor,
-        new java.lang.String[] { "Timestamp", "Data", });
+        new java.lang.String[] { "Timestamp", "Value", });
     internal_static_tendermint_GProposeMessage_descriptor =
       getDescriptor().getMessageTypes().get(3);
     internal_static_tendermint_GProposeMessage_fieldAccessorTable = new

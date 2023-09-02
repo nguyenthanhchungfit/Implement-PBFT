@@ -32,7 +32,7 @@ public class GTendermintConsensusClientTest {
 		int height = 0;
 		int round = 1;
 		GData data = GData.newBuilder()
-				.setData("hello")
+				.setValue("hello")
 				.setTimestamp(System.currentTimeMillis()).build();
 		int validRound = 2;
 		int nodeId = 5;
