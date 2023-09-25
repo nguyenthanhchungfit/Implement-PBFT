@@ -1,4 +1,4 @@
-package com.pbft.tendermint.node;
+package com.pbft.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

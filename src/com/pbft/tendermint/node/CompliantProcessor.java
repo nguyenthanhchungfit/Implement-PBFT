@@ -1,6 +1,8 @@
 package com.pbft.tendermint.node;
 
 import com.google.protobuf.ByteString;
+import com.pbft.common.ConsensusValue;
+import com.pbft.common.NodeMeta;
 import com.pbft.tendermint.common.*;
 import com.pbft.tendermint.core.grpc.*;
 import com.pbft.tendermint.node.schedule.TimeoutPreVoteHandler;

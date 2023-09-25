@@ -18,8 +18,8 @@ import java.util.List;
  * @version 1.0
  * @date 08/08/2023
  */
-public class TendermintApp {
-	private static final Logger LOGGER = LogManager.getLogger(TendermintApp.class);
+public class MultiViewApp {
+	private static final Logger LOGGER = LogManager.getLogger(MultiViewApp.class);
 
 	public static void main(String[] args) {
 		int totalNodes = 3;
