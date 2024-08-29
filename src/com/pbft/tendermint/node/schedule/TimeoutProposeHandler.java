@@ -1,5 +1,8 @@
 package com.pbft.tendermint.node.schedule;
 
+import com.pbft.tendermint.common.MessageType;
+import com.pbft.tendermint.common.TendermintMessage;
+import com.pbft.tendermint.common.TimeoutMessage;
 import com.pbft.tendermint.node.CompliantProcessor;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -15,14 +18,14 @@ import org.apache.logging.log4j.Logger;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TimeoutProposeHandler implements Runnable {
-	private Logger logger;
 	private CompliantProcessor processor;
 	private int height;
 	private int round;
 
 	@Override
 	public void run() {
-//		logger.info("TimeoutProposeHandler at height: " + height + " round: " + round);
-//		processor.doTimeoutPropose(height, round);
+		TimeoutMessage timeoutMsg = new TimeoutMessage(height, round);
+		TendermintMessage msg = new TendermintMessage(MessageType.TIMEOUT_PROPOSE, timeoutMsg);
+		processor.submitJob(msg);
 	}
 }

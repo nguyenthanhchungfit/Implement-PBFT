@@ -10,7 +10,9 @@ public class ConstantConfig {
 	public static final long TIMEOUT_PRE_VOTE = 5000; // ms
 	public static final long TIMEOUT_PRE_COMMIT = 5000; // ms
 
+	public static final long DELAY_PROPOSE_MESSAGE = 500; //ms
 	public static final long TIME_DELAY_NEW_HEIGHT = 10000; // ms
+	public static final long DELAY_POLL_MESSAGE = 50; //ms
 
 	public static final int MAX_HEIGHT = 10;
 }

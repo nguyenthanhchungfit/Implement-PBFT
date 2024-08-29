@@ -48,14 +48,17 @@ public class CompliantProcessor implements IProcessor {
 	private ScheduledExecutorService executor = null;
 	private ConsensusTmpObject consensusTmp;
 	private ConsensusValue[] decisions;
+	private ConcurrentLinkedQueue<TendermintMessage> queueMessage;
 
 	public CompliantProcessor(NodeMeta nodeMeta, Logger logger, ProposeNodeSelector selector) {
 		this(0, 0, null, null, -1, null, null,
 				-1, nodeMeta, null, logger, selector, null,
-				null, null);
+				null, null, null);
 		this.executor = Executors.newSingleThreadScheduledExecutor();
 		this.consensusTmp = new ConsensusTmpObject();
 		this.decisions = new ConsensusValue[ConstantConfig.MAX_HEIGHT];
+		this.queueMessage = new ConcurrentLinkedQueue<>();
+		new Thread(new MessageProcessor(this.logger, this)).start();
 	}
 
 	@Override
@@ -67,37 +70,8 @@ public class CompliantProcessor implements IProcessor {
 
 	@Override
 	public GResult onReceiveProposeMessage(GProposeMessage message) {
-		this.logger.info("Receive propose message: " + MessageUtils.beautifyMessage(message));
-		if (this.step.getCode() != Step.PROPOSE.getCode() || message.getHeight() != this.height
-				|| message.getRound() != this.round) {
-//			this.logger.info("debug here");
-			return GResult.newBuilder()
-					.setError(ConstantResult.ERR_IGNORED)
-					.build();
-		}
-
-		int currentProposeNodeId = this.selector.getProposeNodeId(this.height, this.round);
-		if (message.getNodeId() == currentProposeNodeId) {
-			if (message.getValidRound() == -1) {
-				ConsensusValue value = new ConsensusValue(message.getData().getValue());
-				if (this.isValidValue(value) && (this.lockedRound == -1 || value.equals(this.lockedValue))) {
-//					this.logger.info("debug-1.1");
-					this.consensusTmp.setReceivedProposeValue(value);
-					this.consensusTmp.setReceivedProposeNodeId(message.getNodeId());
-					this.broadcastPreVoteMessage(value);
-				} else {
-//					this.logger.info("debug-1.2");
-					this.broadcastPreVoteMessage(null);
-				}
-				this.step = Step.PRE_VOTE;
-//				this.logger.info("debug-1.3: " + this.step.getCode());
-			} else {
-				ConsensusValue value = new ConsensusValue(message.getData().getValue());
-				this.consensusTmp.setReceivedProposeValue(value);
-				this.consensusTmp.setReceivedProposeNodeId(message.getNodeId());
-				this.consensusTmp.setReceivedProposeValidRound(message.getValidRound());
-			}
-		}
+		TendermintMessage tendermintMsg = new TendermintMessage(message);
+		submitJob(tendermintMsg);
 		return GResult.newBuilder()
 				.setError(0)
 				.setData(message.getData().getValue() + " pong!!")
@@ -106,15 +80,8 @@ public class CompliantProcessor implements IProcessor {
 
 	@Override
 	public GResult onReceivePreVoteMessage(GPreVoteMessage message) {
-		this.logger.info("Receive pre-vote message: " + MessageUtils.beautifyMessage(message));
-		if (this.step.getCode() != Step.PROPOSE.getCode() || message.getHeight() != this.height) {
-			return GResult.newBuilder()
-					.setError(ConstantResult.ERR_FAILED)
-					.build();
-		}
-		this.getConsensusTmp().getReceivedPreVoteValueMap()
-				.computeIfAbsent(message.getNodeId(), k -> message.getHashValue());
-
+		TendermintMessage tendermintMsg = new TendermintMessage(message);
+		submitJob(tendermintMsg);
 		return GResult.newBuilder()
 				.setError(ConstantResult.ERR_SUCCESS)
 				.setData("received pre-vote msg success!!")
@@ -123,22 +90,15 @@ public class CompliantProcessor implements IProcessor {
 
 	@Override
 	public GResult onReceivePreCommitMessage(GPreCommitMessage message) {
-		this.logger.info("Receive pre-commit message: " + MessageUtils.beautifyMessage(message));
-		if (this.decisions[this.height] != null) {
-			return GResult.newBuilder().setError(ConstantResult.ERR_IGNORED)
-					.build();
-		}
-		this.getConsensusTmp().getReceivedPreCommitValueMap()
-				.computeIfAbsent(message.getNodeId(), k -> message.getHashValue());
+		TendermintMessage tendermintMsg = new TendermintMessage(message);
+		submitJob(tendermintMsg);
 		return GResult.newBuilder().setError(ConstantResult.ERR_SUCCESS)
 				.setData("received pre-commit msg success!!")
 				.build();
 	}
 
-
 	@Override
 	public void startConsensus() {
-		startRound(0);
 		while (true) {
 //			this.logger.info("Step 1");
 			while (Step.PROPOSE.getCode() == this.step.getCode()) { // do anything
@@ -168,7 +128,7 @@ public class CompliantProcessor implements IProcessor {
 
 				if (!isFirstTimePreVote) {
 					isFirstTimePreVote = true;
-					TimeoutPreVoteHandler preVoteTimeoutHandler = new TimeoutPreVoteHandler(this.logger, this, this.height, this.round);
+					TimeoutPreVoteHandler preVoteTimeoutHandler = new TimeoutPreVoteHandler(this, this.height, this.round);
 					this.executor.schedule(preVoteTimeoutHandler, ConstantConfig.TIMEOUT_PRE_VOTE, TimeUnit.MILLISECONDS);
 					if (isValidValue) {
 						if (this.step.getCode() == Step.PRE_VOTE.getCode()) {
@@ -207,6 +167,7 @@ public class CompliantProcessor implements IProcessor {
 		this.logger.info(String.format("\n\n------------- START HEIGHT: %d, ROUND: %d -------\n\n", this.height, round));
 		this.round = round;
 		this.step = Step.PROPOSE;
+		SystemUtils.sleep(ConstantConfig.DELAY_PROPOSE_MESSAGE);
 		if (this.selector.getProposeNodeId(this.height, this.round) == this.node.getNodeId()) {
 			this.logger.info("PROPOSE NODE ID: " + this.node.getNodeId());
 			ConsensusValue proposeValue = null;
@@ -215,12 +176,11 @@ public class CompliantProcessor implements IProcessor {
 			} else {
 				proposeValue = getValue();
 			}
-			SystemUtils.sleep(500);
 			this.tmpValue = proposeValue;
 			this.broadcastProposeMessage(proposeValue);
 			// broadcast PROPOSAL msg
 		} else {
-			TimeoutProposeHandler timeoutHandler = new TimeoutProposeHandler(this.logger, this, this.height, this.round);
+			TimeoutProposeHandler timeoutHandler = new TimeoutProposeHandler(this, this.height, this.round);
 			this.executor.schedule(timeoutHandler, ConstantConfig.TIMEOUT_PROPOSE, TimeUnit.MILLISECONDS);
 		}
 	}
@@ -314,6 +274,61 @@ public class CompliantProcessor implements IProcessor {
 		this.node.broadcastPreCommitMessage(msg);
 	}
 
+	// submit to synchronized queue jobs
+	public boolean submitJob(TendermintMessage message) {
+		return this.queueMessage.add(message);
+	}
+
+	// Process listen message
+	public void processReceivedProposeMessage(GProposeMessage message) {
+		this.logger.info("Receive propose message: " + MessageUtils.beautifyMessage(message));
+		if (this.step.getCode() != Step.PROPOSE.getCode() || message.getHeight() != this.height
+				|| message.getRound() != this.round) {
+			return;
+		}
+
+		int currentProposeNodeId = this.selector.getProposeNodeId(this.height, this.round);
+		if (message.getNodeId() == currentProposeNodeId) {
+			if (message.getValidRound() == -1) {
+				ConsensusValue value = new ConsensusValue(message.getData().getValue());
+				if (this.isValidValue(value) && (this.lockedRound == -1 || value.equals(this.lockedValue))) {
+//					this.logger.info("debug-1.1");
+					this.consensusTmp.setReceivedProposeValue(value);
+					this.consensusTmp.setReceivedProposeNodeId(message.getNodeId());
+					this.broadcastPreVoteMessage(value);
+				} else {
+//					this.logger.info("debug-1.2");
+					this.broadcastPreVoteMessage(null);
+				}
+				this.step = Step.PRE_VOTE;
+//				this.logger.info("debug-1.3: " + this.step.getCode());
+			} else {
+				ConsensusValue value = new ConsensusValue(message.getData().getValue());
+				this.consensusTmp.setReceivedProposeValue(value);
+				this.consensusTmp.setReceivedProposeNodeId(message.getNodeId());
+				this.consensusTmp.setReceivedProposeValidRound(message.getValidRound());
+			}
+		}
+	}
+
+	public void processReceivePreVoteMessage(GPreVoteMessage message) {
+		this.logger.info("Receive pre-vote message: " + MessageUtils.beautifyMessage(message));
+		if (this.step.getCode() != Step.PROPOSE.getCode() || message.getHeight() != this.height) {
+			return;
+		}
+		this.getConsensusTmp().getReceivedPreVoteValueMap()
+				.computeIfAbsent(message.getNodeId(), k -> message.getHashValue());
+	}
+
+	public void processReceivePreCommitMessage(GPreCommitMessage message) {
+		this.logger.info("Receive pre-commit message: " + MessageUtils.beautifyMessage(message));
+		if (this.decisions[this.height] != null) {
+			return;
+		}
+		this.getConsensusTmp().getReceivedPreCommitValueMap()
+				.computeIfAbsent(message.getNodeId(), k -> message.getHashValue());
+	}
+
 	// Process Timeout
 	public void doTimeoutPropose(int height, int round) {
 		if (height == this.height && round == this.round) {
@@ -334,4 +349,5 @@ public class CompliantProcessor implements IProcessor {
 			this.startRound(this.round + 1);
 		}
 	}
+
 }
